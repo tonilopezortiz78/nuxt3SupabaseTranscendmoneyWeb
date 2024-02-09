@@ -1,6 +1,15 @@
 # Tony instructions for SUPABASE AUTH, user management 
 Look at the supabase nuxt3 documentation : https://supabase.com/docs/guides/getting-started/tutorials/with-nuxt-3
 
+1-init supabase for auth
+2- install pnpm install or if you just test this :pnpm add @nuxtjs/supabase --save-dev
+3- .env to connect with supabase
+
+
+theme: 
+https://github.com/primefaces/sakai-nuxt
+
+
 # Nuxt 3 Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.

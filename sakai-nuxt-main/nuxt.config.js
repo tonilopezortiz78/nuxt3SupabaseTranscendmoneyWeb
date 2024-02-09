@@ -3,18 +3,18 @@ export default defineNuxtConfig({
     typescript: false,
     app: {
         head: {
-            title: 'Sakai Vue',
+            title: 'Transcend.money',
             link: [
                 {
                     id: 'theme-css',
                     rel: 'stylesheet',
                     type: 'text/css',
-                    href: '/themes/lara-light-indigo/theme.css'
+                    href: '/themes/lara-dark-teal/theme.css'
                 }
             ]
         }
     },
-    modules: ['nuxt-primevue'],
+    modules: ['nuxt-primevue','@nuxtjs/supabase'],
     primevue: {
         options: { ripple: true },
         components: {

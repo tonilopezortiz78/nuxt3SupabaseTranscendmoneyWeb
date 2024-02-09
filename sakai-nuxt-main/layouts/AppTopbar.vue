@@ -19,11 +19,12 @@ const logoUrl = computed(() => {
 
 const onTopBarMenuButton = () => {
     topbarMenuActive.value = !topbarMenuActive.value;
+    router.push('/auth/account');
 };
 
 const onSettingsClick = () => {
     topbarMenuActive.value = false;
-    router.push('/utilities/documentation');
+    router.push('/Documentation');
 };
 
 const topbarMenuClasses = computed(() => {

@@ -6,9 +6,41 @@ const { layoutConfig } = useLayout();
 const email = ref('');
 const password = ref('');
 const checked = ref(false);
+const client = useSupabaseClient();
+const successMsg=ref(null)
+const errorMsg=ref(null)
+const user = useSupabaseUser()
+
 const logoUrl = computed(() => {
     return `/layout/images/${layoutConfig.darkTheme.value ? 'tmlogo' : 'tmlogo'}.svg`;
 });
+
+
+async function magicLink() {
+    try{
+        const { data, error } = await client.auth.signInWithOtp({
+            email: email.value,
+            options: {
+            // set this to false if you do not want the user to be automatically signed up
+            emailRedirectTo: 'http://localhost:3000/confirm',
+            },
+        })
+        if (error) throw error;
+        successMsg.value="Check your email and click the magic link to login"
+        errorMsg.value=null
+    } catch (error){
+        errorMsg.value=error.message;
+        successMsg.value=null;
+    }
+}
+
+watch(user, () => {
+if (user.value) {
+    // Redirect to protected page
+    console.log('push navigation',user.value)
+    return navigateTo('/')
+}
+}, { immediate: true })
 
 definePageMeta({
     layout: false
@@ -26,14 +58,26 @@ definePageMeta({
                     <div class="text-center mb-5">
                         <!-- <img :src="logoUrl" alt="transcend money logo" class="mb-5 w-6rem flex-shrink-0" />
                         <img src="/demo/images/login/avatar.png" alt="Image" height="50" class="mb-3" /> -->
-                        <div class="text-900 text-3xl font-medium mb-3">Welcome back !</div> 
-                        <span class="text-600 font-medium">Sign in to continue</span>
+                        <div class="text-900 text-3xl font-medium mb-3">Welcome back to</div> 
+                        <div class="text-900 text-3xl font-medium mb-3">Transcend Money</div> 
+                        <Fieldset legend="help (magic link)" :toggleable="true">
+                            <p>
+                                1-Insert your email, click Sign in
+                            </p>
+                            <p>
+                                2-Wait confirmation, about 3 seconds
+                            </p>
+                            <p>
+                                3-check your email and click the link
+                            </p>
+                                
+                        </Fieldset>
                     </div>
 
-                    <div>
                         <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-                        <InputText id="email1" v-model="email" type="text" placeholder="Email address" class="w-full md:w-30rem mb-5" style="padding: 1rem" />
-
+                    <div class="flex flex-column align-items-center justify-content-center">
+                        <InputText  id="email1" v-model="email" type="email" placeholder="Email address" class="w-full md:w-30rem mb-5" style="padding: 1rem" />
+                        <!--
                         <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
                         <Password id="password1" v-model="password" placeholder="Password" :toggleMask="true" class="w-full mb-3" inputClass="w-full" :inputStyle="{ padding: '1rem' }"></Password>
 
@@ -44,12 +88,11 @@ definePageMeta({
                             </div>
                             <a class="font-medium no-underline ml-2 text-right cursor-pointer" style="color: var(--primary-color)">Forgot password?</a>
                         </div>
-                        <Button label="Sign In" class="w-full p-3 text-xl"></Button>
+                    -->
+                        <p v-if="errorMsg" style="font-weight:bold; color:red "> {{ errorMsg }}</p>
+                        <p v-if="successMsg" style="font-weight:bold; color:green">  {{ successMsg}}</p>
+                        <Button @click="magicLink" label="Sign In" class="w-full p-3 text-xl"></Button>
                     </div>
-                    <div class="col-12 mt-5 text-center">
-                        <i class="pi pi-fw pi-arrow-left text-blue-500 mr-2" style="vertical-align: center"></i>
-                        <router-link to="/Landing" class="text-blue-500">Go to home</router-link>
-                   </div>
                 </div>
             </div>
         </div>
