@@ -11,6 +11,6 @@ watch(user, () => {
 </script>
 
 <template>
-  <p>user {{ user }}</p>
+  <p>Welcome, loading webapp</p>
   <div>Waiting for login...</div>
 </template>
